@@ -3,8 +3,8 @@ package org.example;
 public class Function {
     int currentState = 0,
     strokeLine = 0;
-    public int Moviment(int n){
-        if(n == 0){
+    public int Moviment(char n){
+        if(n == '0'){
             switch (currentState){
                 case 0 -> {
                     currentState = 2;
@@ -23,7 +23,7 @@ public class Function {
                     strokeLine = 5;
                 }
             }
-        } else if(n == 1){
+        } else if(n == '1'){
             switch (currentState){
                 case 0 -> {
                     currentState = 1;
