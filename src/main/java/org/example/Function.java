@@ -3,7 +3,7 @@ package org.example;
 public class Function {
     int currentState = 0,
     strokeLine = 0;
-    public int Moviment(char n){
+    public int Movement(char n){
         if(n == '0'){
             switch (currentState){
                 case 0 -> {

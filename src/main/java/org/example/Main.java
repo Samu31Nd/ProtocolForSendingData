@@ -2,7 +2,6 @@ package org.example;
 
 import java.awt.*;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,12 +18,7 @@ public class Main extends JPanel{
             ACTIVELine = new Color(100, 159, 189),
 
     INACTIVE = new Color(172, 176, 182, 255),
-            INACTIVELine = new Color(0, 0, 0),
-
-
-    PASS = new Color(167, 233, 175),
-            PASSLine = new Color(68, 130, 97),
-    RECHAZED = new Color(255,0,0);
+            INACTIVELine = new Color(0, 0, 0);
     char number = '-';
 
 
@@ -67,31 +61,31 @@ public class Main extends JPanel{
         //OUTER LINES
         //UP
         if(isActiveQStrokes[0])
-        qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, INITIAL_ANGLE, INITIAL_ANGLE*2);
+            qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, INITIAL_ANGLE, INITIAL_ANGLE*2);
         //LEFT
         if(isActiveQStrokes[1])
-        qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 3*INITIAL_ANGLE, INITIAL_ANGLE*2);
+            qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 3*INITIAL_ANGLE, INITIAL_ANGLE*2);
         //DOWN
         if(isActiveQStrokes[2])
-        qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 5*INITIAL_ANGLE, INITIAL_ANGLE*2);
+            qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 5*INITIAL_ANGLE, INITIAL_ANGLE*2);
         //RIGHT
         if(isActiveQStrokes[3])
-        qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 7*INITIAL_ANGLE, INITIAL_ANGLE*2);
+            qs.drawArc(80 + 10, 80 + 10, WIDTH-20-(80+10)*2, HEIGHT-20-(80+10)*2, 7*INITIAL_ANGLE, INITIAL_ANGLE*2);
 
 
         //INNER LINES
         //UP
         if(isActiveQStrokes[4])
-        qs.drawArc(WIDTH/2 - (HEIGHT-20-(80-10)*2)/2 , -(HEIGHT-20-(80-10)*2)/2 - INNERConst, WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*5, INITIAL_ANGLE*2);
+            qs.drawArc(WIDTH/2 - (HEIGHT-20-(80-10)*2)/2 , -(HEIGHT-20-(80-10)*2)/2 - INNERConst, WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*5, INITIAL_ANGLE*2);
         //RIGHT
         if(isActiveQStrokes[5])
-        qs.drawArc(WIDTH - (HEIGHT-20-(80-10)*2)/2 + INNERConst, -(-20-(80-10)*2)/2 - HConst/2 , WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*3, INITIAL_ANGLE*2);
+            qs.drawArc(WIDTH - (HEIGHT-20-(80-10)*2)/2 + INNERConst, -(-20-(80-10)*2)/2 - HConst/2 , WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*3, INITIAL_ANGLE*2);
         //LEFT
         if(isActiveQStrokes[6])
-        qs.drawArc(-(HEIGHT-20-(80-10)*2)/2 - INNERConst , -(-20-(80-10)*2)/2 - HConst/2 , WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*7, INITIAL_ANGLE*2);
+            qs.drawArc(-(HEIGHT-20-(80-10)*2)/2 - INNERConst , -(-20-(80-10)*2)/2 - HConst/2 , WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE*7, INITIAL_ANGLE*2);
         //DOWN
         if(isActiveQStrokes[7])
-        qs.drawArc(WIDTH/2 - (HEIGHT-20-(80-10)*2)/2 , HEIGHT/2  -(-(80-10)*2)/2 - HConst/2 + INNERConst, WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE, INITIAL_ANGLE*2);
+            qs.drawArc(WIDTH/2 - (HEIGHT-20-(80-10)*2)/2 , HEIGHT/2  -(-(80-10)*2)/2 - HConst/2 + INNERConst, WIDTH-20-(80-10)*2, HEIGHT-20-(80-10)*2, INITIAL_ANGLE, INITIAL_ANGLE*2);
 
 
         qs.setColor(INACTIVE);
@@ -185,15 +179,15 @@ public class Main extends JPanel{
         qs.drawString("0", 600, 300);
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame("Protocol");
         Function fun = new Function();
 
         String[] binaryCode = new String[1000000];
 
         fileManager fm = new fileManager();
-        String acepted = "";
-        String rechazed = "";
+        StringBuilder accepted = new StringBuilder();
+        StringBuilder rejected = new StringBuilder();
 
         Main protocol = new Main();
         int i = 0, j = 0;
@@ -225,7 +219,7 @@ public class Main extends JPanel{
                 Thread.sleep(10);
 
                 protocol.number = c;
-                circle = fun.Moviment(c);
+                circle = fun.Movement(c);
                 line = fun.strokeLine;
 
                 protocol.isActiveQCircle[circle] = true;
@@ -237,15 +231,15 @@ public class Main extends JPanel{
                 TimeUnit.MILLISECONDS.sleep(100);
 
             }
-            fm.appendBinaryString(binaryCode[j]);
             binaryCode[j] += " ";
+            fm.appendBinaryString(binaryCode[j]);
             if(fun.currentState == 0){
-                acepted += binaryCode[j++];
-                System.out.println("Acepted");
+                accepted.append(binaryCode[j++]);
+                System.out.println("Accepted");
             }
             else{
-                rechazed += binaryCode[j++];
-                System.out.println("Rechazed");
+                rejected.append(binaryCode[j++]);
+                System.out.println("Rejected");
 
                 protocol.isActiveQCircle[circle] = false;
                 protocol.isActiveQStrokes[line] = false;
@@ -256,7 +250,8 @@ public class Main extends JPanel{
         }
 
         frame.dispose();
-        fm.writeFiles(acepted,rechazed);
+        fm.writeFiles(accepted.toString(), rejected.toString());
+        fm.closeBinaryFile();
         System.out.println("Program finished.");
     }
 }
